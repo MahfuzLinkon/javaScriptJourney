@@ -236,28 +236,30 @@ const updateUI = function (currentAccount) {
   // display summary
   calcDisplaySummary(currentAccount);
 };
+/////////////////// LogOut Timer ///////////////////////////
+const startLogOutTimer = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    labelTimer.textContent = `${min} : ${sec}`;
+    if (time === 0) {
+      clearInterval(timer);
+      containerApp.style.opacity = 0;
+      labelWelcome.textContent = 'Log in to get started';
+    }
+    time--;
+  };
 
-// login Event handler
-let currentAccount;
+  let time = 120;
+  tick();
 
-// default login
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+  // set interval function
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
 
-////////////////// Date Time formate using internationalization ///////////////////////////////////////////////
-// const now = new Date();
-// const option = {
-//   // hour: 'numeric',
-//   // minute: 'numeric',
-//   day: '2-digit',
-//   month: '2-digit',
-//   year: 'numeric',
-//   // weekday: 'narrow',
-// };
-// const local = navigator.language;
-// console.log(local);
-// labelDate.textContent = new Intl.DateTimeFormat(local, option).format(now);
+//////////////////////////////////////////////// login Event handler ////////////////////////////
+let currentAccount, timer;
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
@@ -301,7 +303,11 @@ btnLogin.addEventListener('click', function (e) {
       currentAccount.locale,
       option
     ).format(now);
+    // Logout timer
 
+    // clearing the timer for another account login
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
     // Update UI
     updateUI(currentAccount);
   } else {
@@ -337,6 +343,9 @@ btnTransfer.addEventListener('click', function (e) {
 
     // Update UI
     updateUI(currentAccount);
+    // Reset logOut timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 
@@ -345,10 +354,16 @@ btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
   const amount = Math.floor(inputLoanAmount.value);
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    currentAccount.movements.push(amount);
-    currentAccount.movementsDates.push(new Date().toISOString());
-    // Update UI
-    updateUI(currentAccount);
+    setTimeout(function () {
+      currentAccount.movements.push(amount);
+      currentAccount.movementsDates.push(new Date().toISOString());
+      // Update UI
+      updateUI(currentAccount);
+
+      // Reset logOut timer
+      clearInterval(timer);
+      timer = startLogOutTimer();
+    }, 2500);
   }
   inputLoanAmount.value = '';
   inputLoanAmount.blur();
@@ -497,3 +512,29 @@ btnSort.addEventListener('click', function (e) {
 // ]);
 
 // console.log(test1);
+
+/////////////////////////////// Set Timeout ///////////////////////////////
+
+// const ingredients = ['olives', 'spinach'];
+// const pizzaTimer = setTimeout(
+//   function (ing1, ing2) {
+//     console.log(`Here is your pizza with ${ing1} and ${ing2}`);
+//   },
+//   3000,
+//   ...ingredients
+// );
+// console.log('Waiting...');
+// if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
+
+//////////////////////////////// Set Interval //////////////////////////
+// setInterval(() => {
+//   const now = new Date();
+//   // console.log(`${now.getHours()}:${now.getMinutes()}: ${now.getSeconds()}`);
+//   console.log(
+//     Intl.DateTimeFormat('bn-BD', {
+//       hour: '2-digit',
+//       minute: '2-digit',
+//       second: '2-digit',
+//     }).format(now)
+//   );
+// }, 1000);
