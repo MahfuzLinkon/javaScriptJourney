@@ -558,3 +558,57 @@ sliders();
 
 // const observer = new IntersectionObserver(obsCallback, obsOption);
 // observer.observe(section1);
+
+// (function countBy(x, n) {
+//   let z = [];
+//   for (let i = x; i <= n; i++) {
+//     if ((i = x)) {
+//       z.push(i);
+//     }
+//     z.push(i * i);
+//   }
+
+//   return z;
+// })(1, 10);
+
+// const maximumValue = movements.reduce((acc, value) => {
+//   // console.log(acc);
+//   if (acc > value) return acc;
+//   else return value;
+// }, movements[0]);
+
+// const countBy = function (number) {
+//   const numberArr = number.split(' ');
+//   // console.log(numberArr);
+//   // const max = Math.max(numberArr);
+//   let max;
+//   let min;
+//   numberArr.forEach((cur, i) => {
+//     max = cur;
+//     let temp = Number(numberArr[i + 1]);
+//     if (temp > max) {
+//       max = temp;
+//     } else {
+//       max = max;
+//     }
+//   });
+
+//   return max;
+// };
+
+// console.log(countBy('20 2 5 1'));
+
+// // DOMContentLoaded Event
+// document.addEventListener('DOMContentLoaded', function (e) {
+//   console.log('DOM Content loaded successfully!', e);
+// });
+// // Load event
+// window.addEventListener('load', function (e) {
+//   console.log('All Content Loaded!', e);
+// });
+// before unload event
+// window.addEventListener('beforeunload', function (e) {
+//   e.preventDefault();
+//   console.log(e);
+//   e.returnValue = '';
+// });
